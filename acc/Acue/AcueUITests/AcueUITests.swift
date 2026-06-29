@@ -1,13 +1,13 @@
 //
-//  AccomiUITests.swift
-//  AccomiUITests
+//  AcueUITests.swift
+//  AcueUITests
 //
 //  Created by cbzw027 on 2026/6/29.
 //
 
 import XCTest
 
-final class AccomiUITests: XCTestCase {
+final class AcueUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

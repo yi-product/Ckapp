@@ -1,14 +1,12 @@
 //
-//  AccomiApp.swift
-//  Accomi
-//
-//  Created by cbzw027 on 2026/6/29.
+//  AcueApp.swift
+//  Acue
 //
 
 import SwiftUI
 
 @main
-struct AccomiApp: App {
+struct AcueApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

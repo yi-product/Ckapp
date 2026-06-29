@@ -1,13 +1,13 @@
 //
-//  AccomiUITestsLaunchTests.swift
-//  AccomiUITests
+//  AcueUITestsLaunchTests.swift
+//  AcueUITests
 //
 //  Created by cbzw027 on 2026/6/29.
 //
 
 import XCTest
 
-final class AccomiUITestsLaunchTests: XCTestCase {
+final class AcueUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
