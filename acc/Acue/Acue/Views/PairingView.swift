@@ -13,35 +13,44 @@ struct PairingView: View {
         VStack(spacing: 0) {
             Spacer()
 
-            GlowLampView(
+            Text("Acue")
+                .acueHandTitle()
+                .padding(.bottom, 8)
+
+            Text("invite someone in")
+                .font(.system(size: 12, weight: .light, design: .monospaced))
+                .foregroundStyle(AcueTheme.textTertiary)
+                .padding(.bottom, 40)
+
+            SymbolEndpointView(
                 state: LampState(isOnline: true, caption: "", moodLabel: ""),
-                isSelf: true
+                size: 64
             )
 
             Spacer().frame(height: 48)
 
             VStack(spacing: 20) {
                 Text("邀请 ta 加入")
-                    .font(.system(size: 15, weight: .light))
+                    .font(.system(size: 14, weight: .light, design: .monospaced))
                     .foregroundStyle(AcueTheme.textSecondary)
 
                 if store.isPairingBusy {
                     ProgressView()
-                        .tint(AcueTheme.amberCore)
+                        .tint(AcueTheme.ink)
                 } else if store.inviteCode.isEmpty {
                     Text("正在生成邀请码…")
-                        .font(.system(size: 15, weight: .light))
+                        .font(.system(size: 14, weight: .light, design: .monospaced))
                         .foregroundStyle(AcueTheme.textTertiary)
                 } else {
                     Text(store.inviteCode)
-                        .font(.system(size: 28, weight: .ultraLight, design: .monospaced))
+                        .font(.system(size: 26, weight: .light, design: .monospaced))
                         .foregroundStyle(AcueTheme.textPrimary)
                         .kerning(6)
                 }
 
                 if !store.iCloudReady {
                     Text("请在本机登录 iCloud，以便跨网络配对")
-                        .font(.system(size: 13, weight: .light))
+                        .font(.system(size: 12, weight: .light, design: .monospaced))
                         .foregroundStyle(AcueTheme.textTertiary)
                         .multilineTextAlignment(.center)
                 }
@@ -50,17 +59,17 @@ struct PairingView: View {
                     showToastCopy()
                 } label: {
                     Label("复制邀请码", systemImage: "doc.on.doc")
-                        .font(.system(size: 15, weight: .regular))
+                        .font(.system(size: 14, weight: .regular, design: .monospaced))
                 }
                 .buttonStyle(.bordered)
-                .tint(AcueTheme.amberCore)
+                .tint(AcueTheme.ink)
                 .disabled(store.inviteCode.isEmpty)
 
                 HStack {
-                    Rectangle().fill(AcueTheme.textTertiary).frame(height: 0.5)
+                    Rectangle().fill(AcueTheme.pencil.opacity(0.4)).frame(height: 0.5)
                     Text("或")
                         .acueCaption()
-                    Rectangle().fill(AcueTheme.textTertiary).frame(height: 0.5)
+                    Rectangle().fill(AcueTheme.pencil.opacity(0.4)).frame(height: 0.5)
                 }
                 .padding(.vertical, 8)
 
@@ -68,21 +77,26 @@ struct PairingView: View {
                     .textInputAutocapitalization(.characters)
                     .autocorrectionDisabled()
                     .multilineTextAlignment(.center)
-                    .font(.system(size: 17, weight: .light, design: .monospaced))
+                    .font(.system(size: 16, weight: .light, design: .monospaced))
+                    .foregroundStyle(AcueTheme.ink)
                     .padding(.vertical, 14)
                     .background {
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color.white.opacity(0.06))
+                            .fill(AcueTheme.paperShadow.opacity(0.25))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .stroke(AcueTheme.ink.opacity(0.08), lineWidth: 1)
+                            )
                     }
 
                 Button(store.isPairingBusy ? "连接中…" : "连接") {
                     Task { await store.joinPair(with: inputCode) }
                 }
-                .font(.system(size: 17, weight: .medium))
+                .font(.system(size: 16, weight: .medium, design: .monospaced))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .background(AcueTheme.amberCore.opacity(0.9), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                .foregroundStyle(Color.black.opacity(0.85))
+                .background(AcueTheme.ink.opacity(0.92), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .foregroundStyle(AcueTheme.paper)
                 .disabled(inputCode.count < 4 || store.isPairingBusy)
                 .opacity(inputCode.count < 4 || store.isPairingBusy ? 0.45 : 1)
             }

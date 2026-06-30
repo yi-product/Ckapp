@@ -11,7 +11,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            AcueTheme.background.ignoresSafeArea()
+            PaperBackground().ignoresSafeArea()
 
             Group {
                 switch store.screen {
@@ -30,7 +30,7 @@ struct ContentView: View {
         .sheet(isPresented: $store.showRecords) {
             RecordsSheet(store: store)
         }
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
         .task {
             await store.bootstrap()
         }

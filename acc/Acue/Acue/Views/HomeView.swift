@@ -13,18 +13,37 @@ struct HomeView: View {
             VStack(spacing: 0) {
                 Spacer()
 
-                HStack(alignment: .top, spacing: 48) {
-                    lampColumn(state: store.selfLamp, flash: store.flashSelf, isSelf: true) {
-                        store.tapSelfLamp()
-                    } onLongPress: {
-                        store.extinguishSelfLamp()
-                    }
+                Text("Acue")
+                    .acueHandTitle()
+                    .padding(.bottom, 36)
 
-                    lampColumn(state: store.partnerLamp, flash: store.flashPartner, isSelf: false) {
-                        store.tapPartnerLamp()
-                    } onLongPress: {
-                        store.longPressPartnerLamp()
+                ZStack {
+                    PresenceCanvasView(
+                        selfState: store.selfLamp,
+                        partnerState: store.partnerLamp,
+                        flashSelf: store.flashSelf,
+                        flashPartner: store.flashPartner,
+                        coTimeMinutes: store.coTimeMinutes
+                    )
+
+                    HStack(spacing: 0) {
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .onTapGesture { store.tapSelfLamp() }
+                            .onLongPressGesture(minimumDuration: 1.8) {
+                                store.extinguishSelfLamp()
+                            }
+
+                        Color.clear.frame(width: 52)
+
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .onTapGesture { store.tapPartnerLamp() }
+                            .onLongPressGesture(minimumDuration: 0.55) {
+                                store.longPressPartnerLamp()
+                            }
                     }
+                    .frame(width: 220, height: 120)
                 }
 
                 Spacer().frame(height: 40)
@@ -43,9 +62,9 @@ struct HomeView: View {
                 } label: {
                     VStack(spacing: 6) {
                         Image(systemName: "chevron.compact.up")
-                            .font(.system(size: 22, weight: .ultraLight))
+                            .font(.system(size: 20, weight: .ultraLight))
                         Text("共时 / 信号")
-                            .font(.system(size: 12, weight: .ultraLight))
+                            .font(.system(size: 11, weight: .light, design: .monospaced))
                     }
                     .foregroundStyle(AcueTheme.textTertiary)
                 }
@@ -59,29 +78,17 @@ struct HomeView: View {
                 VStack {
                     Spacer()
                     Text(toast)
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.system(size: 13, weight: .medium, design: .monospaced))
+                        .foregroundStyle(AcueTheme.ink)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
-                        .background(.ultraThinMaterial, in: Capsule())
+                        .background(AcueTheme.paperShadow.opacity(0.35), in: Capsule())
+                        .overlay(Capsule().stroke(AcueTheme.ink.opacity(0.12), lineWidth: 1))
                         .padding(.bottom, 48)
                 }
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
                 .animation(.easeInOut(duration: 0.25), value: store.toast)
             }
         }
-    }
-
-    @ViewBuilder
-    private func lampColumn(
-        state: LampState,
-        flash: Bool,
-        isSelf: Bool,
-        onTap: @escaping () -> Void,
-        onLongPress: @escaping () -> Void
-    ) -> some View {
-        GlowLampView(state: state, flash: flash, isSelf: isSelf)
-            .contentShape(Circle().size(width: 120, height: 120))
-            .onTapGesture(perform: onTap)
-            .onLongPressGesture(minimumDuration: isSelf ? 1.8 : 0.55, perform: onLongPress)
     }
 }

@@ -27,6 +27,7 @@ struct RecordsSheet: View {
                         Section {
                             HStack {
                                 Text("本周")
+                                    .font(.system(size: 14, weight: .light, design: .monospaced))
                                     .foregroundStyle(AcueTheme.textSecondary)
                                 Spacer()
                                 Text("3h 12m")
@@ -38,13 +39,13 @@ struct RecordsSheet: View {
                             ForEach(store.coTimeEntries) { entry in
                                 HStack(alignment: .firstTextBaseline) {
                                     Text(entry.label)
-                                        .font(.system(size: 15, weight: .light))
+                                        .font(.system(size: 14, weight: .light, design: .monospaced))
                                         .foregroundStyle(AcueTheme.textSecondary)
                                     Spacer()
                                     Text(entry.duration)
                                         .acueMetric()
                                 }
-                                .listRowBackground(Color.white.opacity(0.04))
+                                .listRowBackground(AcueTheme.paperShadow.opacity(0.2))
                             }
                         }
                     } else {
@@ -53,21 +54,21 @@ struct RecordsSheet: View {
                                 VStack(alignment: .leading, spacing: 6) {
                                     HStack {
                                         Text(entry.time)
-                                            .font(.system(size: 14, weight: .light))
+                                            .font(.system(size: 13, weight: .light, design: .monospaced))
                                             .foregroundStyle(AcueTheme.textTertiary)
                                         Spacer()
                                         Text(entry.pattern)
-                                            .font(.system(size: 16, weight: .ultraLight, design: .monospaced))
+                                            .font(.system(size: 15, weight: .light, design: .monospaced))
                                             .foregroundStyle(AcueTheme.textSecondary)
                                     }
                                     if let label = entry.dictionaryLabel {
                                         Text(label)
-                                            .font(.system(size: 15, weight: .ultraLight))
+                                            .font(.system(size: 14, weight: .light))
                                             .foregroundStyle(AcueTheme.textPrimary.opacity(0.7))
                                     }
                                 }
                                 .padding(.vertical, 4)
-                                .listRowBackground(Color.white.opacity(0.04))
+                                .listRowBackground(AcueTheme.paperShadow.opacity(0.2))
                             }
                         }
                     }
@@ -75,18 +76,19 @@ struct RecordsSheet: View {
                 .listStyle(.insetGrouped)
                 .scrollContentBackground(.hidden)
             }
-            .background(AcueTheme.background)
+            .background(PaperBackground())
             .navigationTitle("记录")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("完成") { dismiss() }
-                        .foregroundStyle(AcueTheme.amberCore)
+                        .font(.system(size: 15, design: .monospaced))
+                        .foregroundStyle(AcueTheme.ink)
                 }
             }
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
-        .presentationBackground(AcueTheme.background)
+        .presentationBackground(AcueTheme.paper)
     }
 }

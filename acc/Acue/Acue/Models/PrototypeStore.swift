@@ -19,11 +19,11 @@ enum AppScreen: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .unpaired: return "未配对"
-        case .coPresence: return "双方同亮"
+        case .coPresence: return "同在"
         case .soloOnline: return "仅你在"
-        case .partnerOnly: return "仅对方在"
-        case .idle: return "非共亮"
-        case .unreadSignal: return "未读信号"
+        case .partnerOnly: return "留空位"
+        case .idle: return "各自在"
+        case .unreadSignal: return "未读叩"
         }
     }
 }
@@ -186,8 +186,13 @@ final class PrototypeStore: ObservableObject {
             LiveActivityManager.shared.endImmediately()
         case .coPresence:
             selfLamp.isOnline = true
+            selfLamp.caption = "熬夜中"
+            selfLamp.moodLabel = "累了"
             partnerLamp.isOnline = true
+            partnerLamp.caption = "等你回"
+            partnerLamp.moodLabel = ""
             partnerLamp.hasUnreadHalo = false
+            coTimeMinutes = 47
         case .soloOnline:
             selfLamp.isOnline = true
             partnerLamp.isOnline = false

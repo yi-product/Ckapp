@@ -6,40 +6,64 @@
 import SwiftUI
 
 enum AcueTheme {
-    static let background = Color.black
+    // Paper + ink (§15.1)
+    static let paper = Color(red: 0.98, green: 0.96, blue: 0.91)
+    static let paperShadow = Color(red: 0.92, green: 0.88, blue: 0.80)
 
-    static let amberCore = Color(red: 1.0, green: 0.70, blue: 0.28)
-    static let amberGlow = Color(red: 1.0, green: 0.55, blue: 0.0)
+    static let ink = Color(red: 0.12, green: 0.28, blue: 0.55)
+    static let inkFaded = ink.opacity(0.35)
+    static let pencil = Color(red: 0.72, green: 0.70, blue: 0.66)
 
-    static let textPrimary = Color.white.opacity(0.92)
-    static let textSecondary = Color.white.opacity(0.40)
-    static let textTertiary = Color.white.opacity(0.24)
+    static let accent = ink
+    static let background = paper
 
-    static let lampSize: CGFloat = 88
-    static let lampGlowRadius: CGFloat = 36
+    static let textPrimary = ink
+    static let textSecondary = ink.opacity(0.55)
+    static let textTertiary = pencil.opacity(0.85)
 
-    static func lampGradient(warmth: Double, brightness: Double, shaded: Bool) -> RadialGradient {
-        let core = warmth > 0.6 ? amberCore : Color(red: 1.0, green: 0.78, blue: 0.45)
-        let outer = warmth > 0.6 ? amberGlow : Color(red: 1.0, green: 0.65, blue: 0.15)
-        let opacity = (shaded ? 0.35 : 1.0) * brightness
+    static let symbolSize: CGFloat = 52
+    static let symbolStroke: CGFloat = 2.2
+    static let symbolGap: CGFloat = 28
 
-        return RadialGradient(
-            colors: [
-                core.opacity(opacity),
-                outer.opacity(opacity * 0.55),
-                Color.clear
-            ],
-            center: .center,
-            startRadius: 2,
-            endRadius: lampSize * 0.85
-        )
+    static func moodTint(warmth: Double) -> Color {
+        if warmth > 0.65 {
+            return Color(red: 0.85, green: 0.45, blue: 0.38).opacity(0.55)
+        }
+        if warmth < 0.35 {
+            return Color(red: 0.35, green: 0.52, blue: 0.72).opacity(0.45)
+        }
+        return .clear
+    }
+
+    static func connectionGlyph(selfOnline: Bool, partnerOnline: Bool, coTimeMinutes: Int) -> String? {
+        guard selfOnline && partnerOnline else { return nil }
+        if coTimeMinutes >= 30 { return "—" }
+        if coTimeMinutes >= 10 { return "_" }
+        return "·"
+    }
+}
+
+struct PaperBackground: View {
+    var body: some View {
+        ZStack {
+            AcueTheme.paper
+            LinearGradient(
+                colors: [
+                    AcueTheme.paperShadow.opacity(0.15),
+                    .clear,
+                    AcueTheme.paperShadow.opacity(0.08)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        }
     }
 }
 
 struct AcueCaptionStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.system(size: 13, weight: .ultraLight, design: .default))
+            .font(.system(size: 13, weight: .light, design: .monospaced))
             .foregroundStyle(AcueTheme.textSecondary)
             .multilineTextAlignment(.center)
     }
@@ -48,13 +72,22 @@ struct AcueCaptionStyle: ViewModifier {
 struct AcueMetricStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.system(size: 15, weight: .ultraLight, design: .rounded))
+            .font(.system(size: 14, weight: .light, design: .monospaced))
             .monospacedDigit()
             .foregroundStyle(AcueTheme.textSecondary)
+    }
+}
+
+struct AcueHandTitleStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.system(size: 34, weight: .thin, design: .rounded))
+            .foregroundStyle(AcueTheme.ink)
     }
 }
 
 extension View {
     func acueCaption() -> some View { modifier(AcueCaptionStyle()) }
     func acueMetric() -> some View { modifier(AcueMetricStyle()) }
+    func acueHandTitle() -> some View { modifier(AcueHandTitleStyle()) }
 }
