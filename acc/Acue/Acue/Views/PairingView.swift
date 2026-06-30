@@ -49,7 +49,7 @@ struct PairingView: View {
                 }
 
                 if !store.iCloudReady {
-                    Text("请在本机登录 iCloud，以便跨网络配对")
+                    Text("跨网络配对需 iCloud；Personal Team 真机调试请用本地预览")
                         .font(.system(size: 12, weight: .light, design: .monospaced))
                         .foregroundStyle(AcueTheme.textTertiary)
                         .multilineTextAlignment(.center)

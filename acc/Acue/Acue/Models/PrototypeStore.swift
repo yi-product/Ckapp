@@ -125,7 +125,7 @@ final class PrototypeStore: ObservableObject {
     func prepareInviteIfNeeded() async {
         guard !pairSync.isPairedLocally else { return }
         guard iCloudReady else {
-            showToast("请登录 iCloud 后再创建邀请码")
+            showToast("跨网络配对需 iCloud + 付费开发者账号")
             return
         }
 
@@ -142,7 +142,7 @@ final class PrototypeStore: ObservableObject {
 
     func joinPair(with code: String) async {
         guard iCloudReady else {
-            showToast("请登录 iCloud 后再连接")
+            showToast("跨网络配对需 iCloud + 付费开发者账号")
             return
         }
 

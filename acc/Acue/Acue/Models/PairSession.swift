@@ -21,7 +21,7 @@ enum PairSyncError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .iCloudUnavailable:
-            return "请在本机登录 iCloud 后再试"
+            return "请登录 iCloud；跨网络配对还需付费开发者账号（非 Personal Team）"
         case .inviteNotFound:
             return "邀请码不存在或已失效"
         case .inviteAlreadyUsed:
